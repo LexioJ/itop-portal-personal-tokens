@@ -1,0 +1,80 @@
+# Planning and Development Files
+IMPLEMENTATION_PLAN.md
+REVISED_IMPLEMENTATION_PLAN.md
+TODO.md
+NOTES.md
+planning/
+dev-notes/
+
+# Testing Files
+test-*.php
+test-*.sql
+test/
+tests/
+testing/
+*.test
+*.spec
+
+# Backup Files
+*.bak
+*.backup
+*~
+*.swp
+*.swo
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.sublime-*
+.DS_Store
+Thumbs.db
+
+# Temporary Files
+tmp/
+temp/
+cache/
+*.tmp
+*.temp
+
+# Build Artifacts
+build/
+dist/
+*.zip
+*.tar.gz
+*.tar
+
+# Environment and Configuration
+.env
+.env.*
+config.local.php
+config.dev.php
+config.test.php
+
+# Logs
+*.log
+logs/
+error_log
+
+# Database
+*.sql.local
+*.db
+database/
+
+# Personal Notes and Credentials
+personal/
+private/
+credentials/
+secrets/
+*.key
+*.pem
+
+# System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Debug Files
+debug/
+*.debug
+xdebug.*

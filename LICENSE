@@ -1,0 +1,42 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (C) 2024 iTop Portal Personal Tokens Extension Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+This extension for iTop is designed to work with the iTop ITSM software,
+which is also licensed under AGPL-3.0. 
+
+For the complete text of the AGPL-3.0 license, please visit:
+https://www.gnu.org/licenses/agpl-3.0.en.html
+
+---
+
+ADDITIONAL TERMS
+
+This software is an extension for iTop (IT Operations Portal) and requires
+a properly licensed iTop installation to function. The extension itself is
+provided under AGPL-3.0, which means:
+
+1. Source code must be made available when distributing the software
+2. Modifications must be released under the same license
+3. Changes must be documented
+4. The software must include a prominent notice stating modifications and date
+5. Network use is considered distribution (AGPL specific provision)
+
+For questions about licensing or contribution, please contact the project maintainers
+through the GitHub repository.

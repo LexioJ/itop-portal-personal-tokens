@@ -1,0 +1,92 @@
+/**
+ * Personal Tokens Portal Styles
+ */
+
+.personal-tokens-container {
+    margin-top: 20px;
+}
+
+.personal-tokens-container .panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.personal-tokens-container .btn-group-sm {
+    white-space: nowrap;
+}
+
+.personal-tokens-container table th {
+    font-weight: 600;
+    background-color: #f5f5f5;
+}
+
+.personal-tokens-container table td {
+    vertical-align: middle;
+}
+
+#generated-token {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    background-color: #f9f9f9;
+}
+
+#copy-success {
+    margin-top: 10px;
+}
+
+.modal .alert {
+    margin-bottom: 15px;
+}
+
+.modal .form-text {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Token status indicators */
+.token-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.token-status.active {
+    background-color: #5cb85c;
+    color: white;
+}
+
+.token-status.expired {
+    background-color: #d9534f;
+    color: white;
+}
+
+.token-status.expiring-soon {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .personal-tokens-container table {
+        font-size: 12px;
+    }
+    
+    .personal-tokens-container .btn-group-sm .btn {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+    
+    .personal-tokens-container .panel-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .personal-tokens-container .panel-title .btn {
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension format="1.0">
+  <extension_code>itop-portal-personal-tokens</extension_code>
+  <company>Your Organization</company>
+  <author><![CDATA[Your Name]]></author>
+  <label><![CDATA[Portal Personal Tokens]]></label>
+  <description><![CDATA[Enables Portal Users to manage Personal Tokens for REST API access]]></description>
+  <version>1.0.0</version>
+  <release_date>2025-01-28</release_date>
+  <version_description><![CDATA[Initial release - Expose Personal Token management to Portal Users]]></version_description>
+  <itop_version_min>3.1.0</itop_version_min>
+  <status>stable</status>
+  <mandatory>false</mandatory>
+  <more_info_url>https://github.com/yourusername/itop-portal-personal-tokens</more_info_url>
+</extension>

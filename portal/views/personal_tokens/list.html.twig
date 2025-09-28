@@ -1,0 +1,78 @@
+{# Personal Tokens List View #}
+{% extends 'itop-portal-base/portal/layouts/layout.html.twig' %}
+
+{% block page_title %}
+    {{ 'Portal:PersonalTokens:Title'|dict_s }}
+{% endblock %}
+
+{% block page_content %}
+<div class="personal-tokens-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ 'Portal:PersonalTokens:Title'|dict_s }}
+                        <button class="btn btn-primary btn-sm pull-right" id="create-token-btn">
+                            <i class="fa fa-plus"></i> {{ 'Portal:PersonalTokens:CreateNew'|dict_s }}
+                        </button>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>{{ 'Portal:PersonalTokens:Description'|dict_s }}</p>
+                    
+                    {% if tokens is empty %}
+                        <div class="alert alert-info">
+                            {{ 'Portal:PersonalTokens:NoTokens'|dict_s }}
+                        </div>
+                    {% else %}
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'Class:PersonalToken/Attribute:application'|dict_s }}</th>
+                                    <th>{{ 'Class:PersonalToken/Attribute:scope'|dict_s }}</th>
+                                    <th>{{ 'Class:PersonalToken/Attribute:expiration_date'|dict_s }}</th>
+                                    <th>{{ 'Class:PersonalToken/Attribute:last_use_date'|dict_s }}</th>
+                                    <th>{{ 'Class:PersonalToken/Attribute:use_count'|dict_s }}</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for token in tokens %}
+                                <tr data-token-id="{{ token.id }}">
+                                    <td>{{ token.application }}</td>
+                                    <td>{{ token.scope }}</td>
+                                    <td>{{ token.expiration_date|date('Y-m-d') }}</td>
+                                    <td>{{ token.last_use_date ? token.last_use_date|date('Y-m-d H:i') : '-' }}</td>
+                                    <td>{{ token.use_count }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-warning regenerate-token" data-id="{{ token.id }}">
+                                                <i class="fa fa-refresh"></i> {{ 'Portal:PersonalTokens:Regenerate'|dict_s }}
+                                            </button>
+                                            <button class="btn btn-danger delete-token" data-id="{{ token.id }}">
+                                                <i class="fa fa-trash"></i> {{ 'Portal:PersonalTokens:Delete'|dict_s }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Include modal templates #}
+{% include 'itop-portal-personal-tokens/portal/views/personal_tokens/modals.html.twig' %}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ app.combodo.portal.base.absolute_url }}env-{{ app.combodo.portal.instance.id }}/itop-portal-personal-tokens/portal/public/js/personal_tokens.js"></script>
+    <link rel="stylesheet" href="{{ app.combodo.portal.base.absolute_url }}env-{{ app.combodo.portal.instance.id }}/itop-portal-personal-tokens/portal/public/css/personal_tokens.css">
+{% endblock %}
