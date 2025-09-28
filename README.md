@@ -34,7 +34,7 @@ This extension adds personal token management capabilities to the iTop Portal, a
 4. Select "Portal Personal Tokens" extension
 5. Complete the installation
 
-For detailed installation instructions, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
+For detailed installation instructions, see the documentation in the `docs/` folder
 
 ## Configuration
 
