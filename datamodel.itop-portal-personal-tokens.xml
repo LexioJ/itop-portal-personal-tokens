@@ -54,7 +54,7 @@
           <description>
             <default>Manage your personal API tokens for REST access</default>
           </description>
-          <oql><![CDATA[SELECT PersonalToken AS pt JOIN User AS u ON pt.user_id = u.id WHERE u.contactid = :current_contact_id]]></oql>
+          <class>PersonalToken</class>
           <fields>
             <field id="application"/>
             <field id="scope"/>
