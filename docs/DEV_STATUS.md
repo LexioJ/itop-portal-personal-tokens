@@ -1,7 +1,7 @@
 # Development Status - iTop Portal Personal Tokens Extension
 
-**Last updated**: 2025-09-29  
-**Status**: Portal menu works, CRUD interface not yet functional
+**Last updated**: 2025-09-29 04:17 UTC  
+**Status**: Switched to class-based ManageBrick - testing needed
 
 ## Current State
 
@@ -13,23 +13,24 @@
 - OQL filtering works: `u.contactid = :current_contact_id`
 - Permissions properly extended for Portal User profile
 
-### ❌ Not Working
-- Portal table shows "No item." despite count showing (1) 
-- CRUD actions (create/edit/delete) not functional in portal interface
-- ManageBrick data display issue
+### ❌ Not Working (Need Testing)
+- Portal table may still show "No item." - needs testing after setup wizard
+- CRUD actions (create/edit/delete) not yet tested in portal interface
+- ManageBrick data display - switched to class-based approach
 
 ### 🔧 Technical Details
 - **ManageBrick config**: Uses `ui_version: v3`, proper actions defined
-- **OQL**: `SELECT PersonalToken AS pt JOIN User AS u ON pt.user_id = u.id WHERE u.contactid = :current_contact_id`
+- **NEW**: Switched from complex OQL JOIN to `<class>PersonalToken</class>` approach
+- **Scope filtering**: PersonalToken class scope handles `u.contactid = :current_contact_id`
 - **Test data**: User "boris" (contactid=16) has 1 PersonalToken (id=3, application="Test Application")
 - **Deployment**: Direct copy to `/var/www/itop/web/extensions/itop-portal-personal-tokens/`
 
 ## Next Steps to Resume Development
 
-1. **Diagnose ManageBrick display issue**
-   - Try switching from OQL JOIN to `<class>PersonalToken</class>` in brick
-   - Compare field definitions with working itop-tickets ManageBrick
-   - Check data_loading, grouping, and template configurations
+1. **Test class-based ManageBrick approach**
+   - Complete setup wizard if still running: http://itop-dev.orb.local/setup/
+   - Test portal: http://itop-dev.orb.local/portal/ (login: boris:admin)
+   - Check if Personal Tokens now shows actual items instead of "No item."
 
 2. **Enable debug logging**
    - Check ScopeValidatorHelper decisions
@@ -67,9 +68,9 @@ open http://itop-dev.orb.local/portal/
 # Login as boris:admin, check Personal Tokens menu
 ```
 
-## Files Changed Since Last Commit
+## Recent Changes (Last 2 Commits)
 
-- `datamodel.itop-portal-personal-tokens.xml` - Updated OQL, added CRUD actions
+- **Latest**: `datamodel.itop-portal-personal-tokens.xml` - Switched to class-based ManageBrick
 - `README.md` - Added current status section  
 - `CHANGELOG.md` - Added progress notes and known issues
 - `docs/FILE_STATUS.md` - Added resume instructions
