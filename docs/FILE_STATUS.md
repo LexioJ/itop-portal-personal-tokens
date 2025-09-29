@@ -72,6 +72,20 @@ The extension leverages iTop's existing `PersonalToken` class from the `authent-
 
 ## 🚀 Next Steps
 
+Last updated: 2025-09-29
+
+Where we left off:
+- Portal brick visible and loads; title shows correct count (e.g., Personal Tokens (1))
+- Table area shows “No item.” — CRUD not yet functional in portal
+- Backend "My Account" PersonalToken page works (use as reference)
+
+Immediate plan when resuming:
+- A) Switch brick to `<class>PersonalToken</class>` and keep class scope OQL (filter by current contact)
+- B) Re-run setup wizard (fix config-itop.php perms if needed; see .warp.md)
+- C) Test with user "boris" (contactid=16) — expect 1 row to render
+- D) If list renders, wire up create/edit using standard ManageBrick forms and actions
+- E) Add notes to docs/DEPLOYMENT.md for reproducible steps
+
 1. **Implement AJAX Handler**: Either as separate file or integrate into model.php
 2. **Test Installation**: Deploy to test iTop instance
 3. **Portal Routes**: Verify if additional route configuration is needed

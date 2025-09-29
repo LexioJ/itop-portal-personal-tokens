@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.1">
-  <classes/>
-  <menus/>
   <user_rights>
     <profiles>
       <!-- Extend Portal User profile to allow PersonalToken management -->
@@ -16,61 +14,100 @@
           </group>
         </groups>
       </profile>
-      
-      <!-- Optional: Create a dedicated Portal REST User profile -->
-      <profile id="1025" _delta="define">
-        <name>Portal REST User</name>
-        <description>Portal user with REST API access via personal tokens</description>
-        <groups>
-          <!-- Inherit all Portal User permissions -->
-          <group id="Portal">
-            <actions>
-              <action id="action:write">allow</action>
-              <action id="action:delete">allow</action>
-            </actions>
-          </group>
-          <group id="UserRequest">
-            <actions>
-              <action id="action:write">allow</action>
-              <action id="stimulus:ev_close">allow</action>
-              <action id="stimulus:ev_reopen">allow</action>
-            </actions>
-          </group>
-          <!-- Add PersonalToken management -->
-          <group id="PersonalToken">
-            <actions>
-              <action id="action:read">allow</action>
-              <action id="action:write">allow</action>
-              <action id="action:delete">allow</action>
-            </actions>
-          </group>
-          <!-- Read access to everything else -->
-          <group id="*">
-            <actions>
-              <action id="action:read">allow</action>
-              <action id="action:bulk read">allow</action>
-            </actions>
-          </group>
-        </groups>
-      </profile>
     </profiles>
   </user_rights>
   
-  <!-- Portal configuration -->
-  <portals>
-    <portal id="itop-portal" _delta="must_exist">
+  <!-- Add PersonalToken class configuration -->
+  <classes>
+    <class id="PersonalToken" _delta="must_exist">
+      <scopes>
+        <scope id="all" _delta="define">
+          <oql><![CDATA[SELECT PersonalToken AS pt JOIN User AS u ON pt.user_id = u.id WHERE u.contactid = :current_contact_id]]></oql>
+        </scope>
+      </scopes>
+    </class>
+  </classes>
+
+  <!-- Add Personal Tokens brick to portal module design -->
+  <module_designs>
+    <module_design id="itop-portal" xsi:type="portal" _delta="must_exist">
+      <properties>
+        <ui_version>v3</ui_version>
+      </properties>
       <bricks>
-        <!-- Add Personal Tokens tab to user profile brick -->
-        <brick id="user-profile" xsi:type="Combodo\iTop\Portal\Brick\UserProfileBrick" _delta="must_exist">
-          <tabs>
-            <tab id="personal_tokens" _delta="define">
-              <rank>40</rank>
-              <title>Personal Tokens</title>
-              <template>itop-portal-personal-tokens::personal_tokens</template>
-            </tab>
-          </tabs>
+        <brick id="personal-tokens" xsi:type="Combodo\iTop\Portal\Brick\ManageBrick" _delta="define">
+          <active>true</active>
+          <rank>
+            <default>15</default>
+          </rank>
+          <width>12</width>
+          <title>
+            <default>Personal Tokens</default>
+          </title>
+          <decoration_class>
+            <default>fas fa-key fa-2x</default>
+          </decoration_class>
+          <visible>
+            <home>false</home>
+            <navigation_menu>true</navigation_menu>
+          </visible>
+          <description>
+            <default>Manage your personal API tokens for REST access</default>
+          </description>
+          <oql><![CDATA[SELECT PersonalToken AS pt JOIN User AS u ON pt.user_id = u.id WHERE u.contactid = :current_contact_id]]></oql>
+          <fields>
+            <field id="application"/>
+            <field id="scope"/>
+            <field id="expiration_date"/>
+            <field id="last_use_date"/>
+            <field id="use_count"/>
+          </fields>
+          <actions>
+            <action id="create_from_this" xsi:type="create_from_this">
+              <class>PersonalToken</class>
+              <icon_class>fas fa-plus</icon_class>
+            </action>
+            <action id="edit" xsi:type="edit">
+              <icon_class>fas fa-edit</icon_class>
+            </action>
+            <action id="view" xsi:type="view">
+              <icon_class>fas fa-eye</icon_class>
+            </action>
+          </actions>
+          <opening_mode>edit</opening_mode>
+          <data_loading>auto</data_loading>
         </brick>
       </bricks>
-    </portal>
-  </portals>
+      <navigation_rules>
+        <!-- Navigation rule for Personal Tokens brick -->
+        <navigation_rule id="go-to-personal-tokens" xsi:type="go-to-manage-brick" _delta="define">
+          <id>personal-tokens</id>
+        </navigation_rule>
+        <!-- Navigation rule for creating new tokens -->
+        <navigation_rule id="go-to-personal-tokens-create" xsi:type="go-to-object" _delta="define">
+          <mode>create</mode>
+        </navigation_rule>
+      </navigation_rules>
+      <!-- Action rules for token creation -->
+      <action_rules>
+        <action_rule id="create-personal-token" _delta="define">
+          <presets>
+            <!-- Auto-set the user_id to current user -->
+            <preset id="1">set(user_id, $current_user_id$)</preset>
+          </presets>
+        </action_rule>
+      </action_rules>
+      <!-- Forms for PersonalToken management -->
+      <forms>
+        <form id="personal-token-create" _delta="define">
+          <class>PersonalToken</class>
+          <fields/>
+          <modes>
+            <mode id="create"/>
+            <mode id="edit"/>
+          </modes>
+        </form>
+      </forms>
+    </module_design>
+  </module_designs>
 </itop_design>

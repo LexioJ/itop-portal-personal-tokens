@@ -126,3 +126,25 @@ Developed for the iTop community to enable Portal Users to leverage REST API cap
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
+
+---
+
+## Current Status (2025-09-29)
+
+- Portal menu entry “Personal Tokens” is visible for Portal Users
+- OQL updated to filter by current portal contact: `u.contactid = :current_contact_id`
+- PersonalToken class scope added for portal context
+- ManageBrick registered under module_design itop-portal with ui_version v3
+- Counts display correctly (eg. “Personal Tokens (1)”), but list area shows “No item.”
+- CRUD actions (create/edit/delete) are not yet functional in the portal; backend My Account CRUD works
+- Setup wizard needs permission fixes occasionally (see .warp.md) before running
+
+Next steps to resume:
+1) Diagnose why ManageBrick renders “No item” despite returning one row
+   - Compare to itop-tickets ManageBrick; verify columns and data_loading
+   - Try pure class <class>PersonalToken</class> vs OQL JOIN
+   - Enable portal debug logs; check ScopeValidatorHelper and BrickCollection
+2) Wire up create/edit/delete using standard ManageBrick actions and forms
+3) Re-run setup, verify with Boris user, and add simple e2e test notes in docs.
+
+See last screenshot in the issue log for current UI state.

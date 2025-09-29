@@ -44,6 +44,35 @@ Dict::Add('EN US', 'English', 'English', array(
     'Portal:PersonalTokens:ConfirmDelete' => 'Are you sure you want to delete this token?',
     'Portal:PersonalTokens:ConfirmRegenerate' => 'Are you sure you want to regenerate this token? Applications using the old token will stop working.',
     
+    // Additional translations needed for the template
+    'Portal:PersonalTokens:Loading' => 'Loading tokens...',
+    'Portal:PersonalTokens:Application' => 'Application Name',
+    'Portal:PersonalTokens:Application:Placeholder' => 'e.g., Nextcloud, Mobile App, Script',
+    'Portal:PersonalTokens:Application:Help' => 'Give your token a meaningful name to identify where it\'s used',
+    'Portal:PersonalTokens:Description:Placeholder' => 'Optional description of what this token is used for',
+    'Portal:PersonalTokens:ExpiryDays' => 'Expires in',
+    'Portal:PersonalTokens:Days' => 'days',
+    'Portal:PersonalTokens:LastUsed' => 'Last Used',
+    'Portal:PersonalTokens:UseCount' => 'Uses',
+    'Portal:PersonalTokens:Actions' => 'Actions',
+    'Portal:PersonalTokens:ExpiryDate' => 'Expires',
+    'Portal:PersonalTokens:Scope' => 'Scope',
+    
+    // Token creation success
+    'Portal:PersonalTokens:TokenCreated' => 'Token Created Successfully',
+    'Portal:PersonalTokens:TokenCreated:Success' => 'Your personal token has been created successfully!',
+    'Portal:PersonalTokens:TokenCreated:Warning' => 'This is the only time you will see the token value. Make sure to copy it now and store it securely.',
+    'Portal:PersonalTokens:YourToken' => 'Your Personal Token',
+    
+    // Buttons
+    'Portal:Button:Cancel' => 'Cancel',
+    'Portal:Button:Close' => 'Close',
+    
+    // Additional error messages
+    'Portal:PersonalTokens:Error:LoadFailed' => 'Failed to load personal tokens',
+    'Portal:PersonalTokens:Error:CreateFailed' => 'Failed to create personal token',
+    'Portal:PersonalTokens:Error:DeleteFailed' => 'Failed to delete personal token',
+    
     // Errors
     'Portal:PersonalTokens:Error:Creation' => 'Failed to create token',
     'Portal:PersonalTokens:Error:NotFound' => 'Token not found',

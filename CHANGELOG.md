@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Portal navigation menu entry "Personal Tokens" visible for Portal Users
+- PersonalToken class scope with OQL filtering by current portal contact
+- ManageBrick configuration with ui_version v3 for iTop 3.2+ compatibility
+- Basic CRUD action definitions (create_from_this, edit, view) in ManageBrick
+- Navigation rules and action rules for token management workflows
+
+### Fixed
+- OQL query parameter corrected from `:current_user_id` to `:current_contact_id`
+- Simplified JOIN query from 3-table to 2-table for better ManageBrick compatibility
+- UI version updated from `2025` to `v3` to match modern portal patterns
+
+### Known Issues
+- ManageBrick shows correct count but "No item" in list area (CRUD not yet wired in portal)
+- Backend "My Account" PersonalToken management works and can serve as reference
 - Initial development version
 - Portal UI for personal token management
 - Create, regenerate, and delete token functionality
