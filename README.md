@@ -35,17 +35,31 @@ This extension adds personal token management capabilities to the iTop Portal, a
 3. Run the iTop setup wizard
 4. Select "Portal Personal Tokens" extension
 5. Complete the installation
+6. **Important**: Enable REST token authentication (see Configuration below)
 
 For detailed installation instructions, see [DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 ## Configuration
 
-Add to your `config-itop.php`:
+**Required**: Enable REST API token authentication by adding to your `config-itop.php`:
 
 ```php
 'allow_rest_services_via_tokens' => true,
+```
+
+**Without this setting, the Personal API Tokens tab will not appear in the user profile.**
+
+You can also configure in iTop Admin Console:
+1. Go to **Admin Tools** > **Configuration**
+2. Find **allow_rest_services_via_tokens**
+3. Set to **Yes** or **true**
+4. Click **APPLY**
+
+Optional settings:
+
+```php
 'portal_personal_tokens' => array(
-    'max_tokens_per_user' => 5,  // Maximum tokens per user
+    'max_tokens_per_user' => 5,  // Maximum tokens per user (default: 5)
 ),
 ```
 
