@@ -1,0 +1,76 @@
+{# JavaScript for Personal Tokens Tab #}
+// Prevent double form submission
+var formSubmitting = false;
+
+// Handle token form submission
+window.handleTokenFormSubmit = function(event) {
+	var $form = $('#createTokenForm');
+	var $submitBtn = $form.find('button[type="submit"]');
+
+	if (formSubmitting || $submitBtn.prop('disabled')) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		return false;
+	}
+
+	formSubmitting = true;
+	$submitBtn.prop('disabled', true);
+	$submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Creating...');
+	return true;
+};
+
+// Copy token to clipboard
+window.copyTokenToClipboard = function(elementId) {
+		var input = document.getElementById(elementId);
+		input.select();
+		input.setSelectionRange(0, 99999);
+
+		try {
+			document.execCommand('copy');
+			alert('Token copied to clipboard!');
+		} catch (err) {
+			console.error('Failed to copy token:', err);
+		}
+	};
+
+// Delete token via form submission
+window.confirmDeleteToken = function(tokenId, tokenName) {
+		if (formSubmitting) {
+			return false;
+		}
+
+		if (!confirm('Are you sure you want to delete this token?\n\n' + tokenName)) {
+			return;
+		}
+
+		formSubmitting = true;
+		document.getElementById('token_action_type').value = 'delete';
+		document.getElementById('token_action_id').value = tokenId;
+		document.getElementById('tokenActionForm').submit();
+};
+
+// Regenerate token via form submission
+window.confirmRegenerateToken = function(tokenId, tokenName) {
+		if (formSubmitting) {
+			return false;
+		}
+
+		if (!confirm('Are you sure you want to regenerate this token?\n\nThe old token will stop working immediately.\n\n' + tokenName)) {
+			return;
+		}
+
+		formSubmitting = true;
+		document.getElementById('token_action_type').value = 'regenerate';
+		document.getElementById('token_action_id').value = tokenId;
+		document.getElementById('tokenActionForm').submit();
+};
+
+// Focus application field when modal is shown
+$('#createTokenModal').on('shown.bs.modal', function () {
+	$('#token_application').focus();
+	formSubmitting = false;
+
+	var $submitBtn = $('#createTokenForm').find('button[type="submit"]');
+	$submitBtn.prop('disabled', false);
+	$submitBtn.html('<i class="fas fa-plus"></i> Create Token');
+});

@@ -5,60 +5,104 @@ All notable changes to the iTop Portal Personal Tokens Extension will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2025-10-04
 
 ### Added
-- Portal navigation menu entry "Personal Tokens" visible for Portal Users
-- PersonalToken class scope with OQL filtering by current portal contact
-- ManageBrick configuration with ui_version v3 for iTop 3.2+ compatibility
-- Basic CRUD action definitions (create_from_this, edit, view) in ManageBrick
-- Navigation rules and action rules for token management workflows
+- ✅ **Complete Portal Integration** via User Profile Tab Extension
+- ✅ **Token Creation** with custom application name, scope (REST/JSON, REST/JSON+Export), and expiration (30/90/180/365 days)
+- ✅ **Token Regeneration** with one-time display of new token value
+- ✅ **Token Deletion** with confirmation dialog
+- ✅ **Token Viewing** with usage statistics (count, last used date, expiration)
+- ✅ **Copy to Clipboard** functionality for generated tokens
+- ✅ **CSRF Protection** using iTop's built-in transaction ID validation
+- ✅ **Double-Submission Prevention** via static flag mechanism
+- ✅ **User Isolation** - users can only see and manage their own tokens
+- ✅ **Permission Extensions** for Portal User profile to manage PersonalToken objects
+- ✅ **Bootstrap 3 UI** with modal dialogs and responsive design
+- ✅ **Multi-language Support** (English and German dictionaries included)
+- ✅ **Comprehensive Documentation** (README, deployment guide, architecture notes)
 
-### Fixed
-- OQL query parameter corrected from `:current_user_id` to `:current_contact_id`
-- Simplified JOIN query from 3-table to 2-table for better ManageBrick compatibility
-- UI version updated from `2025` to `v3` to match modern portal patterns
-
-### Known Issues
-- ManageBrick shows correct count but "No item" in list area (CRUD not yet wired in portal)
-- Backend "My Account" PersonalToken management works and can serve as reference
-- Initial development version
-- Portal UI for personal token management
-- Create, regenerate, and delete token functionality
-- Token expiration and scope management
-- Integration with existing iTop authent-token module
-- Permission extensions for Portal Users
-- English language translations
-- Comprehensive documentation
+### Technical Implementation
+- User Profile Tab Extension (`iUserProfileTabContentExtension`) instead of ManageBricks
+- Direct OQL queries with `user_id` filtering for security
+- Integration with iTop's `AuthentTokenService` for token generation
+- Twig templates for HTML, JavaScript, and CSS
+- Static state management to prevent double execution
 
 ### Security
-- Tokens stored using secure hashing
-- Automatic token expiration
-- Per-user token limits
-- Scope-based access control
+- Tokens stored hashed in database (never plain text)
+- Transaction ID validation prevents CSRF attacks
+- User ID filtering enforced at query level
+- AllowWrite/AllowDelete permission bypasses for portal users
+- All operations logged via IssueLog (errors only)
 
-## [1.0.0] - TBD
+### Fixed
+- Double token creation on form double-click/double-submit
+- Transaction ID consumption and validation flow
+- Form data persistence across method calls
+- Success/error message display logic
+- Debug logging removed from production code
+
+## [0.2.0] - 2025-09-29 (Development)
+
+### Changed
+- Switched from ManageBrick approach to User Profile Tab Extension
+- Simplified OQL queries - removed complex JOINs
+- Direct form handling via POST instead of brick actions
+
+### Removed
+- ManageBrick configuration (moved to User Profile Tab Extension)
+- Complex OQL JOINs with User class
+- Brick-based navigation rules
+
+### Issues Resolved
+- ManageBrick "No item" display issue - not applicable with new approach
+- Scope filtering complications - resolved with direct user_id queries
+- "Show token once" workflow - easily handled with custom UI
+
+## [0.1.0] - 2025-09-28 (Initial Development)
 
 ### Added
-- First stable release
-- Full Portal integration
-- REST API authentication support
-- Token usage tracking
-- Responsive UI design
-- AJAX-based token operations
+- Initial project structure
+- ManageBrick configuration (later replaced)
+- PersonalToken class scope
+- Basic permission extensions
+- English translations
 
-### Documentation
-- Installation guide
-- Deployment guide
-- API usage examples
-- Security considerations
+### Known Issues (Resolved in 1.0.0)
+- ManageBrick showed count but not items
+- CRUD actions not functional in portal
+- Complex OQL queries required
 
 ---
 
-## Version History
+## Migration Notes
 
-- **1.0.0** - Initial release (TBD)
-  - Core functionality for Portal Users to manage personal API tokens
-  - Integration with iTop 3.1.0+
-  - Leverages existing authent-token module
-  - Upgrade-safe extension architecture
+### From 0.x to 1.0.0
+- Complete architectural change from ManageBricks to User Profile Tab Extension
+- No data migration needed - uses same PersonalToken class
+- Clear cache after upgrade: `rm -rf /path/to/itop/data/cache-production/*`
+
+### Configuration
+```php
+// Required in config-itop.php
+'allow_rest_services_via_tokens' => true,
+'portal_personal_tokens' => array(
+    'max_tokens_per_user' => 5,
+),
+```
+
+## Upgrade Path
+
+### From iTop 3.1.x to 3.2.x
+- Extension is compatible with both versions
+- No changes required
+- Leverages standard iTop extension hooks
+
+---
+
+## Version History Summary
+
+- **1.0.0** (2025-10-04) - Production release with full functionality
+- **0.2.0** (2025-09-29) - Architectural pivot to User Profile Tab Extension
+- **0.1.0** (2025-09-28) - Initial development with ManageBricks

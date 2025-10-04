@@ -1,0 +1,12 @@
+# Screenshots
+
+This directory contains screenshots demonstrating the extension's functionality.
+
+## Available Screenshots
+
+- `token-list-view.png` - Main token management interface showing the list of personal tokens
+- `token-creation-modal.png` - Token creation dialog with application name, scope, and expiration settings
+
+## Usage in Documentation
+
+These screenshots are referenced in the main README.md to help users understand the extension's interface.

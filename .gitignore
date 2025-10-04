@@ -26,6 +26,7 @@ testing/
 # IDE and Editor Files
 .vscode/
 .idea/
+.claude/
 *.sublime-*
 .DS_Store
 Thumbs.db
