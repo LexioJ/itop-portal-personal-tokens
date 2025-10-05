@@ -1,5 +1,11 @@
 # iTop Portal Personal Tokens Extension
 
+[![iTop Version](https://img.shields.io/badge/iTop-3.1.0+-blue.svg)](https://www.combodo.com/itop)
+[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.1.0-orange.svg)](CHANGELOG.md)
+[![Security](https://img.shields.io/badge/security-hardened-brightgreen.svg)](SECURITY.md)
+[![Translations](https://img.shields.io/badge/translations-2%2F17-yellow.svg)](TRANSLATION.md)
+
 Enable Portal Users to create and manage personal API tokens for REST API access in iTop.
 
 ## Overview
@@ -55,13 +61,27 @@ You can also configure in iTop Admin Console:
 3. Set to **Yes** or **true**
 4. Click **APPLY**
 
-Optional settings:
+### Optional Configuration
 
 ```php
 'portal_personal_tokens' => array(
-    'max_tokens_per_user' => 5,  // Maximum tokens per user (default: 5)
+    'max_tokens_per_user' => 5,      // Maximum tokens per user (default: 5, range: 1-20)
+    'default_expiry_days' => 90,     // Default expiration in days (default: 90)
 ),
 ```
+
+#### Configuration Parameters
+
+| Parameter | Type | Default | Valid Range | Description |
+|-----------|------|---------|-------------|-------------|
+| `max_tokens_per_user` | integer | `5` | `1-20` | Maximum number of personal tokens a user can create. Prevents token proliferation. |
+| `default_expiry_days` | integer | `90` | `30-365` | Default token expiration period in days (users select this in UI dropdown). |
+
+**Notes:**
+- **max_tokens_per_user**: Values above 20 are not recommended for security reasons (increases attack surface if account is compromised)
+- **default_expiry_days**: Shorter expiration periods improve security through regular token rotation
+- Both parameters are optional; defaults are used if not specified
+- Changes require clearing the iTop cache: `rm -rf /path/to/itop/data/cache-production/*`
 
 ## Screenshots
 
@@ -104,13 +124,19 @@ curl -X POST https://your-itop.com/webservices/rest.php?version=1.3 \
 
 ## Security Considerations
 
-- Tokens are stored hashed in the database (never stored in plain text)
-- Each token has a unique scope limiting its permissions
-- Tokens expire automatically based on configured expiration date
-- Users can only manage their own tokens (enforced at database query level)
-- All token operations are logged via IssueLog
-- CSRF protection prevents duplicate token creation
-- Server-side transaction ID validation prevents replay attacks
+This extension implements multiple layers of security protection:
+
+- **Token Storage**: Tokens are stored hashed in the database (never stored in plain text)
+- **Scope Limitation**: Each token has a unique scope limiting its permissions
+- **Automatic Expiration**: Tokens expire automatically based on configured expiration date
+- **User Isolation**: Users can only manage their own tokens (enforced at database query level)
+- **Audit Logging**: All token operations are logged via IssueLog
+- **CSRF Protection**: Transaction ID validation prevents duplicate submissions and replay attacks
+- **XSS Prevention** (v1.1.0+): All user inputs properly escaped in templates
+- **SQL Injection Prevention**: Parameterized OQL queries with placeholder bindings
+- **Input Validation**: Server-side validation for all user-provided data
+
+For complete security documentation, see [SECURITY.md](SECURITY.md)
 
 ## Architecture
 
@@ -193,15 +219,33 @@ open http://itop-dev.orb.local/portal/
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Create a Pull Request
 
-### Translation Contributions
+### Translation Status
 
-We welcome translations! The extension includes dictionary files for all 17 iTop languages:
+The extension supports all 17 iTop languages with dictionary files:
 
-**Supported Languages**: Czech, Danish, German, English, British English, Spanish, French, Hungarian, Italian, Japanese, Dutch, Polish, Brazilian Portuguese, Russian, Slovak, Turkish, Chinese
+| Language | Code | Status | Completion |
+|----------|------|--------|------------|
+| English | `en` | ✅ Complete | 100% (native) |
+| German | `de` | ✅ Complete | 100% (professional translation) |
+| British English | `en_gb` | ⚠️ Partial | ~60% (English fallback with UK spellings) |
+| Czech | `cs` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Danish | `da` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Spanish | `es_cr` | ⚠️ Fallback | 0% (English fallback with markers) |
+| French | `fr` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Hungarian | `hu` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Italian | `it` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Japanese | `ja` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Dutch | `nl` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Polish | `pl` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Portuguese (BR) | `pt_br` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Russian | `ru` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Slovak | `sk` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Turkish | `tr` | ⚠️ Fallback | 0% (English fallback with markers) |
+| Chinese | `zh_cn` | ⚠️ Fallback | 0% (English fallback with markers) |
 
-**Currently Available**:
-- ✅ English (complete)
-- ❌ All others (English fallback with translation markers)
+**Translation Contributions Welcome!**
+
+Native speakers are invited to contribute translations for their languages. All dictionary files include English fallback text with `TRANSLATE:` markers for easy identification of strings needing translation.
 
 See [TRANSLATION.md](TRANSLATION.md) for detailed translation instructions.
 

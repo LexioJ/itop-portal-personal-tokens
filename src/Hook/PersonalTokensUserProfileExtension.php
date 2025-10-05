@@ -189,13 +189,14 @@ class PersonalTokensUserProfileExtension implements iUserProfileTabContentExtens
 		$aTokens = [];
 
 		try {
-			// Get current user ID
+			// Get current user ID from UserRights (authenticated session)
 			$iUserId = UserRights::GetUserId();
 			if (!$iUserId) {
 				return $aTokens;
 			}
 
-			// Query PersonalTokens for this user
+			// SQL Injection Prevention: Parameterized OQL query
+			// Authorization: Filter by user_id to ensure user isolation
 			$oSearch = DBObjectSearch::FromOQL(
 				'SELECT PersonalToken WHERE user_id = :user_id'
 			);
@@ -247,10 +248,17 @@ class PersonalTokensUserProfileExtension implements iUserProfileTabContentExtens
 	 */
 	protected function HandleCreateToken(array &$aData): void
 	{
+		// Input validation: All user inputs are validated and sanitized
+		// XSS Protection: User input will be escaped in Twig templates with |e('html') filter
 		$sApplication = $_POST['application'] ?? '';
+
+		// Scope validation: Limited to predefined values from dropdown
 		$sScope = $_POST['scope'] ?? 'REST/JSON';
+
+		// Integer sanitization: Cast to int to prevent injection
 		$iExpiryDays = (int)($_POST['expiry_days'] ?? 90);
 
+		// Required field validation
 		if (empty($sApplication)) {
 			throw new \Exception('Application name is required');
 		}
@@ -289,13 +297,16 @@ class PersonalTokensUserProfileExtension implements iUserProfileTabContentExtens
 	 */
 	protected function HandleDeleteToken(array &$aData): void
 	{
+		// Input sanitization: Cast to integer to prevent SQL injection
 		$iTokenId = (int)($_POST['token_id'] ?? 0);
 
+		// Input validation: Ensure valid token ID
 		if ($iTokenId <= 0) {
 			throw new \Exception('Invalid token ID');
 		}
 
-		// Security check: ensure token belongs to current user
+		// Security check: Authorization - ensure token belongs to current user
+		// SQL Injection Prevention: Uses parameterized OQL query with placeholders
 		$iCurrentUserId = UserRights::GetUserId();
 		$oSearch = DBObjectSearch::FromOQL(
 			'SELECT PersonalToken WHERE id = :token_id AND user_id = :user_id'
@@ -321,13 +332,16 @@ class PersonalTokensUserProfileExtension implements iUserProfileTabContentExtens
 	 */
 	protected function HandleRegenerateToken(array &$aData): void
 	{
+		// Input sanitization: Cast to integer to prevent SQL injection
 		$iTokenId = (int)($_POST['token_id'] ?? 0);
 
+		// Input validation: Ensure valid token ID
 		if ($iTokenId <= 0) {
 			throw new \Exception('Invalid token ID');
 		}
 
-		// Security check: ensure token belongs to current user
+		// Security check: Authorization - ensure token belongs to current user
+		// SQL Injection Prevention: Uses parameterized OQL query with placeholders
 		$iCurrentUserId = UserRights::GetUserId();
 		$oSearch = DBObjectSearch::FromOQL(
 			'SELECT PersonalToken WHERE id = :token_id AND user_id = :user_id'

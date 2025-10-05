@@ -8,16 +8,16 @@
 	<div class="panel-body">
 		<p class="text-muted">{{ 'Portal:PersonalTokens:Description'|dict_s }}</p>
 
-		{# Success/Error messages #}
+		{# Success/Error messages - Server-generated, safe to display #}
 		{% if aData.success_message is defined %}
 			<div class="alert alert-success">
-				{{ aData.success_message }}
+				{{ aData.success_message|e('html') }}
 			</div>
 		{% endif %}
 
 		{% if aData.error_message is defined %}
 			<div class="alert alert-danger">
-				{{ aData.error_message }}
+				{{ aData.error_message|e('html') }}
 			</div>
 		{% endif %}
 
@@ -28,7 +28,8 @@
 				<div class="form-group">
 					<label>{{ 'Portal:PersonalTokens:YourToken'|dict_s }}</label>
 					<div class="input-group">
-						<input type="text" class="form-control" id="new-token-value" value="{{ aData.new_token_value }}" readonly>
+						{# XSS Protection: Token value is system-generated but escape for defense-in-depth #}
+						<input type="text" class="form-control" id="new-token-value" value="{{ aData.new_token_value|e('html_attr') }}" readonly>
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="button" onclick="copyTokenToClipboard('new-token-value')">
 								<i class="fas fa-copy"></i> {{ 'Portal:PersonalTokens:Copy'|dict_s }}
@@ -74,7 +75,8 @@
 					<tbody>
 						{% for token in aData.tokens %}
 							<tr>
-								<td><strong>{{ token.application }}</strong></td>
+								{# XSS Protection: Escape user-provided application name #}
+								<td><strong>{{ token.application|e('html') }}</strong></td>
 								<td><span class="label label-info">{{ token.scope }}</span></td>
 								<td>{{ token.expiration_date|date('Y-m-d H:i') }}</td>
 								<td>{{ token.last_use_date ? token.last_use_date|date('Y-m-d H:i') : '-' }}</td>

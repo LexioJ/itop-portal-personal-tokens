@@ -5,6 +5,57 @@ All notable changes to the iTop Portal Personal Tokens Extension will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-10-05
+
+### Security Enhancements
+
+- **XSS Prevention Improvements**
+  - Added explicit HTML escaping for user-provided application names in templates (`|e('html')`)
+  - Added HTML attribute escaping for token values (`|e('html_attr')`) for defense-in-depth
+  - Added escaping for success/error messages (`|e('html')`)
+  - Comprehensive security comments in Twig templates
+
+- **Input Sanitization Documentation**
+  - Added explicit security comments in PHP code for all input validation points
+  - Documented SQL injection prevention via parameterized queries
+  - Clarified authorization checks with inline comments
+  - Added validation comments for integer casting and required field checks
+
+- **JavaScript Security Hardening**
+  - Added comprehensive security documentation in JavaScript code
+  - Clarified that no `eval()` or unsafe DOM manipulation is used
+  - Documented use of safe DOM methods (`.value`, `.prop()`, `.html()` with static content)
+  - Improved error handling in clipboard functionality
+  - Added input validation for clipboard element lookup
+
+### Documentation
+
+- **SECURITY.md**: Created comprehensive security policy document
+  - Detailed security architecture explanation
+  - XSS, SQL injection, and CSRF protection documentation
+  - Security best practices for users and administrators
+  - Vulnerability reporting process
+  - Code references for all security measures
+  - Links to OWASP resources and iTop security documentation
+
+- **Code Comments**: Enhanced inline security documentation
+  - All user input handling points documented
+  - Escaping strategies explained
+  - Authorization checks clarified
+  - SQL injection prevention highlighted
+
+### Changed
+
+- Updated version number from 1.0.0 to 1.1.0
+- Enhanced security posture without breaking changes
+- All changes are backward compatible with 1.0.0
+
+### Notes
+
+- **Upgrade Safe**: Drop-in replacement for 1.0.0
+- **No Database Changes**: Uses same schema as 1.0.0
+- **Clear Cache**: Run `rm -rf /path/to/itop/data/cache-production/*` after upgrade
+
 ## [1.0.0] - 2025-10-04
 
 ### Added

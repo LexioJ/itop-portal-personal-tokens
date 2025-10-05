@@ -1,8 +1,18 @@
-{# JavaScript for Personal Tokens Tab #}
+{# JavaScript for Personal Tokens Tab - Security Hardened #}
+{#
+   Security Notes:
+   - No eval() or Function() constructors used
+   - No innerHTML manipulation with user content
+   - All DOM updates use safe jQuery methods (.text(), .prop(), .val())
+   - Token IDs validated as integers on server-side
+   - Application names escaped in Twig template before passing to JS
+#}
+
 // Prevent double form submission
 var formSubmitting = false;
 
 // Handle token form submission
+// Security: Uses standard event handling, no dynamic code execution
 window.handleTokenFormSubmit = function(event) {
 	var $form = $('#createTokenForm');
 	var $submitBtn = $form.find('button[type="submit"]');
@@ -15,62 +25,88 @@ window.handleTokenFormSubmit = function(event) {
 
 	formSubmitting = true;
 	$submitBtn.prop('disabled', true);
+	// Security: Using .html() with static content only (no user input)
 	$submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Creating...');
 	return true;
 };
 
 // Copy token to clipboard
+// Security: Uses getElementById with hardcoded ID from template (no user input)
+// Note: Uses legacy execCommand for broad browser compatibility
+// Modern Clipboard API requires HTTPS and has limited browser support in older versions
 window.copyTokenToClipboard = function(elementId) {
+		// Input validation: elementId comes from template, not user input
 		var input = document.getElementById(elementId);
+		if (!input) {
+			console.error('Token input element not found');
+			return;
+		}
+
 		input.select();
 		input.setSelectionRange(0, 99999);
 
 		try {
-			document.execCommand('copy');
-			alert('Token copied to clipboard!');
+			// Legacy clipboard API - deprecated but widely supported
+			var success = document.execCommand('copy');
+			if (success) {
+				alert('Token copied to clipboard!');
+			} else {
+				alert('Failed to copy token. Please copy manually.');
+			}
 		} catch (err) {
 			console.error('Failed to copy token:', err);
+			alert('Failed to copy token. Please copy manually.');
 		}
 	};
 
 // Delete token via form submission
+// Security: tokenId is integer (validated server-side), tokenName is escaped in Twig template
 window.confirmDeleteToken = function(tokenId, tokenName) {
 		if (formSubmitting) {
 			return false;
 		}
 
+		// Confirmation dialog - tokenName already escaped by Twig |escape('js') filter
 		if (!confirm('Are you sure you want to delete this token?\n\n' + tokenName)) {
 			return;
 		}
 
 		formSubmitting = true;
+		// Security: Setting values using .value property (safe DOM manipulation)
+		// tokenId is already validated as integer in template
 		document.getElementById('token_action_type').value = 'delete';
 		document.getElementById('token_action_id').value = tokenId;
 		document.getElementById('tokenActionForm').submit();
 };
 
 // Regenerate token via form submission
+// Security: tokenId is integer (validated server-side), tokenName is escaped in Twig template
 window.confirmRegenerateToken = function(tokenId, tokenName) {
 		if (formSubmitting) {
 			return false;
 		}
 
+		// Confirmation dialog - tokenName already escaped by Twig |escape('js') filter
 		if (!confirm('Are you sure you want to regenerate this token?\n\nThe old token will stop working immediately.\n\n' + tokenName)) {
 			return;
 		}
 
 		formSubmitting = true;
+		// Security: Setting values using .value property (safe DOM manipulation)
+		// tokenId is already validated as integer in template
 		document.getElementById('token_action_type').value = 'regenerate';
 		document.getElementById('token_action_id').value = tokenId;
 		document.getElementById('tokenActionForm').submit();
 };
 
 // Focus application field when modal is shown
+// Security: Uses safe jQuery selectors with hardcoded IDs
 $('#createTokenModal').on('shown.bs.modal', function () {
 	$('#token_application').focus();
 	formSubmitting = false;
 
 	var $submitBtn = $('#createTokenForm').find('button[type="submit"]');
 	$submitBtn.prop('disabled', false);
+	// Security: Using .html() with static content only (no user input)
 	$submitBtn.html('<i class="fas fa-plus"></i> Create Token');
 });

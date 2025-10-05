@@ -10,7 +10,7 @@
 
 SetupWebPage::AddModule(
     __FILE__,
-    'itop-portal-personal-tokens/1.0.0',
+    'itop-portal-personal-tokens/1.1.0',
     array(
         // Identification
         'label' => 'Portal Personal Tokens',
